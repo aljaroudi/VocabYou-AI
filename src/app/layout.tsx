@@ -1,7 +1,8 @@
 import '~/styles/globals.css'
 
-import { type Metadata } from 'next'
+import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 
 import { TRPCReactProvider } from '~/trpc/react'
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={geist.variable}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Analytics />
       </body>
     </html>
   )
