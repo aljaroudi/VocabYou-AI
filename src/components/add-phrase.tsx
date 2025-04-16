@@ -23,7 +23,14 @@ export function AddPhrase({ onAdd }: { onAdd: (def: Phrase) => void }) {
   }
 
   return (
-    <div className="flex gap-2">
+    <form
+      className="flex gap-2"
+      onSubmit={e => {
+        e.preventDefault()
+        add.mutate({ phrase, apiKey, languages })
+        e.currentTarget.blur()
+      }}
+    >
       <Settings
         apiKey={apiKey}
         setApiKey={setApiKey}
@@ -35,16 +42,19 @@ export function AddPhrase({ onAdd }: { onAdd: (def: Phrase) => void }) {
         onChange={e => setPhrase(e.target.value)}
         placeholder="Enter a phrase..."
         className="rounded-full bg-white"
+        minLength={1}
+        required
+        disabled={add.isPending}
       />
       <Button
         disabled={!phrase || !apiKey || add.isPending}
         size="icon"
-        onClick={() => add.mutate({ phrase, apiKey, languages })}
+        type="submit"
         aria-busy={add.isPending}
         className="rounded-full aria-busy:animate-spin"
       >
         <PlusIcon />
       </Button>
-    </div>
+    </form>
   )
 }
