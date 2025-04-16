@@ -16,7 +16,12 @@ export function Settings({
   return (
     <Drawer open={apiKey.length === 0 ? true : undefined}>
       <DrawerTrigger asChild>
-        <Button size="icon" variant={apiKey ? 'outline' : 'destructive'} aria-invalid={!apiKey}>
+        <Button
+          size="icon"
+          variant={apiKey ? 'outline' : 'destructive'}
+          aria-invalid={!apiKey}
+          className="rounded-full"
+        >
           <SettingsIcon />
         </Button>
       </DrawerTrigger>
