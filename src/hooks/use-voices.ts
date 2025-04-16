@@ -20,6 +20,13 @@ export function useVoices(
     }
 
     updateVoices()
+
+    // Cleanup function to remove the event handler when component unmounts
+    return () => {
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = null
+      }
+    }
   }, [])
 
   // If a voice name is provided, return the specific voice
