@@ -7,7 +7,14 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'AI-powered tool for learning vocabulary in multiple languages.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#000000',
+    background_color: 'oklch(97% 0.001 106.424)',
+    theme_color: 'oklch(97% 0.001 106.424)',
+    icons: [
+      {
+        src: '/web-app-manifest-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+    ],
   }
 }
