@@ -16,10 +16,12 @@ export const aiRouter = createTRPCRouter({
     .output(
       z.object({
         phrase: z.string(),
+        timestamp: z.date(),
         def: GeminiRes,
       })
     )
     .mutation(async ({ input: { phrase, languages, apiKey } }) => {
+      const timestamp = new Date()
       const ai = new GoogleGenAI({ apiKey })
 
       const res = await ai.models.generateContent({
@@ -30,16 +32,13 @@ export const aiRouter = createTRPCRouter({
             role: 'user',
             parts: [
               {
-                text: `Phrase: ${phrase}`,
-              },
-              {
-                text: `Target languages: ${languages.join(', ')}`,
+                text: `Target languages: [${languages.join(', ')}]\nPhrase: ${phrase}`,
               },
             ],
           },
         ],
       })
       if (!res.text) throw new Error('No response from AI')
-      return { phrase, def: JSON.parse(res.text) as GeminiRes }
+      return { phrase, def: JSON.parse(res.text) as GeminiRes, timestamp }
     }),
 })
