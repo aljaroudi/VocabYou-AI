@@ -1,5 +1,6 @@
-import { KeyRoundIcon } from 'lucide-react'
+import { KeyRoundIcon, SettingsIcon } from 'lucide-react'
 import { Button } from './ui/button'
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer'
 
 export function Settings({
   apiKey,
@@ -8,18 +9,32 @@ export function Settings({
   apiKey: string
   setApiKey: (key: string) => void
 }) {
+  function handleApiKeyChange() {
+    const newKey = prompt('Enter your Gemini API key', apiKey)
+    if (newKey) setApiKey(newKey.trim())
+  }
   return (
-    <Button
-      onClick={() => {
-        const key = prompt('Enter your API key', apiKey)?.trim()
-        if (key) setApiKey(key)
-      }}
-      size="icon"
-      variant={apiKey ? 'outline' : 'destructive'}
-      aria-invalid={!apiKey}
-      className="aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive rounded-full aria-invalid:animate-pulse"
-    >
-      <KeyRoundIcon />
-    </Button>
+    <Drawer open={apiKey.length === 0 ? true : undefined}>
+      <DrawerTrigger asChild>
+        <Button size="icon" variant={apiKey ? 'outline' : 'destructive'} aria-invalid={!apiKey}>
+          <SettingsIcon />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="mx-auto w-full max-w-[40ch]">
+          <DrawerHeader>
+            <DrawerTitle>Settings</DrawerTitle>
+          </DrawerHeader>
+          <div className="flex flex-col p-2">
+            <div className="flex items-center justify-between">
+              <Button variant="outline" onClick={handleApiKeyChange}>
+                <KeyRoundIcon />
+                {apiKey ? 'Update Gemini API key' : 'Gemini API key is required'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DrawerContent>
+    </Drawer>
   )
 }
