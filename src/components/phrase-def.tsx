@@ -1,8 +1,10 @@
 import type { Phrase } from '~/lib/types'
 import { Button } from './ui/button'
-import { ArrowUpIcon, TrashIcon } from 'lucide-react'
+import { ArrowUpIcon, HeadphonesIcon, TrashIcon } from 'lucide-react'
 import { languageLabels } from '~/lib/i18n-helpers'
 import { getTimeAgo } from '~/lib/dates'
+import { useVoices } from '~/hooks/use-voices'
+import { useState } from 'react'
 
 export function PhraseDef({
   def: { def, phrase, timestamp },
@@ -13,6 +15,9 @@ export function PhraseDef({
   onDelete: VoidFunction
   onMoveUp: VoidFunction
 }) {
+  const voices = useVoices()
+  const [isSpeaking, setIsSpeaking] = useState<number>()
+
   return (
     <div>
       <div
@@ -25,18 +30,50 @@ export function PhraseDef({
         <p className="text-sm text-gray-500">{getTimeAgo(timestamp)}</p>
       </div>
       <div className="flex flex-col gap-2">
-        {def.translations.map(t => {
+        {def.translations.map((t, i) => {
           const labels = languageLabels[t.target]
           const isRtl = t.target === 'ar-SA'
+
+          function speak() {
+            const utterance = new SpeechSynthesisUtterance(t.text)
+
+            if (t.target === 'ar-SA') {
+              utterance.voice = voices.find(v => v.lang.startsWith('ar')) ?? null
+            } else if (t.target !== 'en-US') {
+              utterance.voice =
+                voices.find(v => v.lang === t.target && v.localService) ??
+                voices.find(v => v.lang === t.target) ??
+                null
+            }
+
+            utterance.lang = t.target
+            utterance.onstart = () => setIsSpeaking(i)
+            utterance.onend = () => setIsSpeaking(undefined)
+            window.speechSynthesis.speak(utterance)
+          }
           return (
             <div
               key={t.target}
               className="flex flex-col gap-2 rounded-md border p-2 shadow"
               data-lang={t.target}
             >
-              <span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
-                {labels.flag} {t.text}
-              </span>
+              <div
+                className="flex items-center gap-2 data-[rtl=true]:flex-row-reverse"
+                data-rtl={isRtl}
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full disabled:animate-spin"
+                  onClick={speak}
+                  disabled={isSpeaking === i}
+                >
+                  <HeadphonesIcon />
+                </Button>
+                <span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
+                  {labels.flag} {t.text}
+                </span>
+              </div>
               <p className="text-sm data-[rtl=true]:text-right" data-rtl={isRtl}>
                 {t.definition}
               </p>
