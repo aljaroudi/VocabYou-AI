@@ -1,8 +1,9 @@
 import type { Phrase } from '~/lib/types'
 import { Button } from './ui/button'
-import { ArrowUpIcon, TrashIcon } from 'lucide-react'
+import { ArrowUpIcon, HeadphonesIcon, TrashIcon } from 'lucide-react'
 import { languageLabels } from '~/lib/i18n-helpers'
 import { getTimeAgo } from '~/lib/dates'
+import { useVoices } from '~/hooks/use-voices'
 
 export function PhraseDef({
   def: { def, phrase, timestamp },
@@ -13,6 +14,7 @@ export function PhraseDef({
   onDelete: VoidFunction
   onMoveUp: VoidFunction
 }) {
+  const voices = useVoices()
   return (
     <div>
       <div
@@ -28,6 +30,22 @@ export function PhraseDef({
         {def.translations.map(t => {
           const labels = languageLabels[t.target]
           const isRtl = t.target === 'ar-SA'
+
+          function speak() {
+            const utterance = new SpeechSynthesisUtterance(t.text)
+
+            if (t.target === 'ar-SA') {
+              utterance.voice = voices.find(v => v.lang.startsWith('ar')) ?? null
+            } else if (t.target !== 'en-US') {
+              utterance.voice =
+                voices.find(v => v.lang === t.target && v.localService) ??
+                voices.find(v => v.lang === t.target) ??
+                null
+            }
+
+            utterance.lang = t.target
+            window.speechSynthesis.speak(utterance)
+          }
           return (
             <div
               key={t.target}
@@ -37,6 +55,9 @@ export function PhraseDef({
               <span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
                 {labels.flag} {t.text}
               </span>
+              <Button variant="outline" size="icon" className="rounded-full" onClick={speak}>
+                <HeadphonesIcon />
+              </Button>
               <p className="text-sm data-[rtl=true]:text-right" data-rtl={isRtl}>
                 {t.definition}
               </p>
