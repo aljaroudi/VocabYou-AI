@@ -6,7 +6,7 @@ export const geminiConfig = {
   temperature: 0,
   responseMimeType: 'application/json',
   systemInstruction: {
-    text: 'You are an AI assistant that translates phrases and provides clear definitions, part of speech, synonyms, antonyms, and usage examples. Include multiple translations for the same language if useful.',
+    text: 'You are an AI assistant that translates phrases and provides clear definitions, part of speech, synonyms, antonyms, and usage examples. For each target language, provide multiple translations when possible, especially for words with different meanings or contexts. Always include a clear definition for each translation. Make the definitions comprehensive and easy to understand.',
   },
   responseSchema: {
     type: Schema.OBJECT,
@@ -14,15 +14,17 @@ export const geminiConfig = {
       detectedLang: {
         type: Schema.STRING,
         enum: LANGS,
-        description: 'detected language of the input phrase',
+        description:
+          'The ISO language code of the automatically detected source language (e.g., "en-US", "fr-FR")',
         nullable: false,
       },
       translations: {
         type: Schema.ARRAY,
-        description: 'List of translations in different target languages',
+        description:
+          'List of translations in different target languages. Provide multiple translations per language when possible.',
         items: {
           type: Schema.OBJECT,
-          required: ['target', 'text'],
+          required: ['target', 'text', 'definition'],
           properties: {
             target: {
               type: Schema.STRING,
@@ -34,8 +36,9 @@ export const geminiConfig = {
             },
             definition: {
               type: Schema.STRING,
-              description: 'definition or meaning of the translated word or phrase',
-              nullable: true,
+              description:
+                'a clear and comprehensive yet concise definition or meaning of the translated word or phrase in the target language',
+              nullable: false,
             },
             func: {
               type: Schema.STRING,
@@ -80,11 +83,11 @@ export const GeminiRes = z.object({
     z.object({
       target: z.enum(LANGS),
       text: z.string(),
-      definition: z.optional(z.string()),
+      definition: z.string(),
       func: z.optional(z.enum(PARTS_OF_SPEECH)),
-      synonyms: z.optional(z.array(z.string())),
-      antonyms: z.optional(z.array(z.string())),
-      examples: z.optional(z.array(z.string())),
+      synonyms: z.union([z.array(z.string()), z.null()]).optional(),
+      antonyms: z.union([z.array(z.string()), z.null()]).optional(),
+      examples: z.union([z.array(z.string()), z.null()]).optional(),
     })
   ),
 })
