@@ -13,9 +13,7 @@ export const geminiConfig = {
     properties: {
       detectedLang: {
         type: Schema.STRING,
-        enum: LANGS,
-        description:
-          'The ISO language code of the automatically detected source language (e.g., "en-US", "fr-FR")',
+        description: 'The most likely ISO language code of the phrase (e.g., "en-US", "fr-FR")',
         nullable: false,
       },
       translations: {
