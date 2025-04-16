@@ -16,12 +16,12 @@ export const aiRouter = createTRPCRouter({
     .output(
       z.object({
         phrase: z.string(),
-        timestamp: z.date(),
+        timestamp: z.number(),
         def: GeminiRes,
       })
     )
     .mutation(async ({ input: { phrase, languages, apiKey } }) => {
-      const timestamp = new Date()
+      const timestamp = new Date().getTime()
       const ai = new GoogleGenAI({ apiKey })
 
       const res = await ai.models.generateContent({
