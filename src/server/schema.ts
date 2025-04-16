@@ -1,32 +1,6 @@
 import { type GenerateContentConfig, Type as Schema } from '@google/genai/node'
 import * as z from 'zod'
-
-const LANGS = [
-  'en-US',
-  'en-GB',
-  'fr-FR',
-  'es-ES',
-  'es-MX',
-  'de-DE',
-  'ar-SA',
-  'zh-CN',
-  'hi-IN',
-  'ja-JP',
-  'ru-RU',
-] as const satisfies string[]
-
-const PARTS_OF_SPEECH = [
-  'noun',
-  'verb',
-  'adjective',
-  'adverb',
-  'pronoun',
-  'preposition',
-  'conjunction',
-  'interjection',
-  'determiner',
-  'article',
-] as const satisfies string[]
+import { LANGS, PARTS_OF_SPEECH } from '~/lib/constants'
 
 export const geminiConfig = {
   temperature: 0,
