@@ -32,7 +32,7 @@ export const geminiConfig = {
   temperature: 0,
   responseMimeType: 'application/json',
   systemInstruction: {
-    text: 'You are a helpful assistant that defines phrases and their translations. You may return multiple translations in the same language when appropriate.',
+    text: 'You are an AI assistant that translates phrases and provides clear definitions, part of speech, synonyms, antonyms, and usage examples. Include multiple translations for the same language if useful.',
   },
   responseSchema: {
     type: Schema.OBJECT,
@@ -56,7 +56,7 @@ export const geminiConfig = {
             },
             text: {
               type: Schema.STRING,
-              description: 'the trasnaltion of the input phrase',
+              description: 'the translation of the input phrase',
             },
             definition: {
               type: Schema.STRING,
