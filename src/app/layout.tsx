@@ -8,7 +8,7 @@ import { TRPCReactProvider } from '~/trpc/react'
 
 export const metadata: Metadata = {
   title: 'VocabYou',
-  description: 'VocabYou is a tool for learning vocabulary in multiple languages.',
+  description: 'AI-powered tool for learning vocabulary in multiple languages.',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 
