@@ -4,6 +4,7 @@ import { ArrowUpIcon, HeadphonesIcon, TrashIcon } from 'lucide-react'
 import { languageLabels } from '~/lib/i18n-helpers'
 import { getTimeAgo } from '~/lib/dates'
 import { useVoices } from '~/hooks/use-voices'
+import { useState } from 'react'
 
 export function PhraseDef({
   def: { def, phrase, timestamp },
@@ -15,6 +16,8 @@ export function PhraseDef({
   onMoveUp: VoidFunction
 }) {
   const voices = useVoices()
+  const [isSpeaking, setIsSpeaking] = useState<number>()
+
   return (
     <div>
       <div
@@ -27,7 +30,7 @@ export function PhraseDef({
         <p className="text-sm text-gray-500">{getTimeAgo(timestamp)}</p>
       </div>
       <div className="flex flex-col gap-2">
-        {def.translations.map(t => {
+        {def.translations.map((t, i) => {
           const labels = languageLabels[t.target]
           const isRtl = t.target === 'ar-SA'
 
@@ -44,6 +47,8 @@ export function PhraseDef({
             }
 
             utterance.lang = t.target
+            utterance.onstart = () => setIsSpeaking(i)
+            utterance.onend = () => setIsSpeaking(undefined)
             window.speechSynthesis.speak(utterance)
           }
           return (
@@ -52,12 +57,23 @@ export function PhraseDef({
               className="flex flex-col gap-2 rounded-md border p-2 shadow"
               data-lang={t.target}
             >
-              <span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
-                {labels.flag} {t.text}
-              </span>
-              <Button variant="outline" size="icon" className="rounded-full" onClick={speak}>
-                <HeadphonesIcon />
-              </Button>
+              <div
+                className="flex items-center gap-2 data-[rtl=true]:flex-row-reverse"
+                data-rtl={isRtl}
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full disabled:animate-spin"
+                  onClick={speak}
+                  disabled={isSpeaking === i}
+                >
+                  <HeadphonesIcon />
+                </Button>
+                <span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
+                  {labels.flag} {t.text}
+                </span>
+              </div>
               <p className="text-sm data-[rtl=true]:text-right" data-rtl={isRtl}>
                 {t.definition}
               </p>
