@@ -37,6 +37,9 @@ export function PhraseDef({
               <span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
                 {labels.flag} {t.text}
               </span>
+              <p className="text-sm data-[rtl=true]:text-right" data-rtl={isRtl}>
+                {t.definition}
+              </p>
               <TitledList title={labels.exampleLabel} items={t.examples} rtl={isRtl} />
               <TitledList title={labels.synonymLabel} items={t.synonyms} rtl={isRtl} />
               <TitledList title={labels.antonymLabel} items={t.antonyms} rtl={isRtl} />
@@ -56,7 +59,15 @@ export function PhraseDef({
   )
 }
 
-function TitledList({ title, items, rtl }: { title: string; items?: string[]; rtl: boolean }) {
+function TitledList({
+  title,
+  items,
+  rtl,
+}: {
+  title: string
+  items?: string[] | null
+  rtl: boolean
+}) {
   if (!items) return null
   return (
     <div
