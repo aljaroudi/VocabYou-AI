@@ -31,6 +31,9 @@ const PARTS_OF_SPEECH = [
 export const geminiConfig = {
   temperature: 0,
   responseMimeType: 'application/json',
+  systemInstruction: {
+    text: 'You are a helpful assistant that defines phrases and their translations. You may return multiple translations in the same language when appropriate.',
+  },
   responseSchema: {
     type: Schema.OBJECT,
     properties: {
@@ -38,6 +41,7 @@ export const geminiConfig = {
         type: Schema.STRING,
         enum: LANGS,
         description: 'detected language of the input phrase',
+        nullable: false,
       },
       translations: {
         type: Schema.ARRAY,
@@ -52,11 +56,11 @@ export const geminiConfig = {
             },
             text: {
               type: Schema.STRING,
-              description: 'translated text',
+              description: 'the trasnaltion of the input phrase',
             },
             definition: {
               type: Schema.STRING,
-              description: 'definition of the translated word or phrase',
+              description: 'definition or meaning of the translated word or phrase',
               nullable: true,
             },
             func: {
@@ -102,11 +106,11 @@ export const GeminiRes = z.object({
     z.object({
       target: z.enum(LANGS),
       text: z.string(),
-      definition: z.nullable(z.string()),
-      func: z.nullable(z.enum(PARTS_OF_SPEECH)),
-      synonyms: z.nullable(z.array(z.string())),
-      antonyms: z.nullable(z.array(z.string())),
-      examples: z.nullable(z.array(z.string())),
+      definition: z.optional(z.string()),
+      func: z.optional(z.enum(PARTS_OF_SPEECH)),
+      synonyms: z.optional(z.array(z.string())),
+      antonyms: z.optional(z.array(z.string())),
+      examples: z.optional(z.array(z.string())),
     })
   ),
 })
