@@ -1,11 +1,17 @@
 import { KeyRoundIcon, SettingsIcon } from 'lucide-react'
 import { Button } from './ui/button'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer'
+import { MultiSelect } from './multi-select'
+import { LANGS } from '~/lib/constants'
 
 export function Settings({
+  languages,
+  setLanguages,
   apiKey,
   setApiKey,
 }: {
+  languages: string[]
+  setLanguages: (language: string) => void
   apiKey: string
   setApiKey: (key: string) => void
 }) {
@@ -37,6 +43,12 @@ export function Settings({
                 {apiKey ? 'Update Gemini API key' : 'Gemini API key is required'}
               </Button>
             </div>
+            <MultiSelect
+              options={LANGS}
+              value={languages}
+              onChange={setLanguages}
+              placeholder="Select languages"
+            />
           </div>
         </div>
       </DrawerContent>
