@@ -18,10 +18,7 @@ export function PhraseDef({
 	const langName = def.originalText.lang ? languageLabels[def.originalText.lang].name : ''
 	return (
 		<div>
-			<div
-				className="flex justify-between data-[rtl=true]:flex-row-reverse"
-				data-rtl={def.originalText.lang === 'ar-001'}
-			>
+			<div className="flex justify-between" lang={def.originalText.lang ?? undefined}>
 				<h2 className="text-lg font-bold">
 					{phrase} <i className="text-xs text-gray-500">{langName}</i>
 				</h2>
@@ -29,13 +26,13 @@ export function PhraseDef({
 			<div className="flex flex-col gap-2">
 				{def.translations.map((t, i) => {
 					const labels = languageLabels[t.target]
-					const isRtl = t.target === 'ar-001'
 					return (
-						<div key={i} className="flex flex-col gap-2 rounded-md border p-2 shadow">
-							<div
-								className="flex items-center gap-2 data-[rtl=true]:flex-row-reverse"
-								data-rtl={isRtl}
-							>
+						<div
+							key={i}
+							className="flex flex-col gap-2 rounded-md border p-2 shadow"
+							lang={t.target}
+						>
+							<div className="flex items-center gap-2">
 								<Button
 									variant="outline"
 									size="icon"
@@ -52,50 +49,28 @@ export function PhraseDef({
 								>
 									<HeadphonesIcon />
 								</Button>
-								<div
-									className="flex flex-col items-start w-full data-[rtl=true]:items-end"
-									data-rtl={isRtl}
-								>
-									<div
-										className="flex data-[rtl=true]:flex-row-reverse items-center gap-1"
-										data-rtl={isRtl}
-									>
+								<div className="flex flex-col items-start w-full">
+									<div className="flex items-center gap-1">
 										<span role="img">{labels.flag}</span>
-										<span className="font-bold data-[rtl=true]:text-right">{t.text}</span>
+										<span className="font-bold">{t.text}</span>
 									</div>
 									<span className="text-xs text-gray-500">{t.pronunciation}</span>
 								</div>
 							</div>
 							<p
-								className="cursor-copy text-sm data-[rtl=true]:text-right"
-								data-rtl={isRtl}
+								className="cursor-copy text-sm"
 								onClick={() => navigator.clipboard.writeText(t.definition)}
 							>
 								{t.definition}
 							</p>
-							<TitledList
-								title={labels.exampleLabel}
-								items={t.examples}
-								rtl={isRtl}
-								lang={t.target}
-							/>
-							<TitledList
-								title={labels.synonymLabel}
-								items={t.synonyms}
-								rtl={isRtl}
-								lang={t.target}
-							/>
-							<TitledList
-								title={labels.antonymLabel}
-								items={t.antonyms}
-								rtl={isRtl}
-								lang={t.target}
-							/>
+							<TitledList title={labels.exampleLabel} items={t.examples} lang={t.target} />
+							<TitledList title={labels.synonymLabel} items={t.synonyms} lang={t.target} />
+							<TitledList title={labels.antonymLabel} items={t.antonyms} lang={t.target} />
 						</div>
 					)
 				})}
 			</div>
-			<div className="flex justify-between">
+			<div className="flex justify-between py-1">
 				<Button variant="ghost" size="icon" onClick={onDelete}>
 					<TrashIcon className="text-rose-600" />
 				</Button>
@@ -110,20 +85,15 @@ export function PhraseDef({
 function TitledList({
 	title,
 	items,
-	rtl,
 	lang,
 }: {
 	title: string
 	items?: string[] | null
-	rtl: boolean
 	lang: Lang
 }) {
 	if (!items?.length) return null
 	return (
-		<div
-			className="flex flex-col gap-2 rounded bg-white p-2 data-[rtl=true]:text-right"
-			data-rtl={rtl}
-		>
+		<div className="flex flex-col gap-1 rounded bg-white p-2">
 			<p className="text-sm font-bold">{title}</p>
 			<ol className="flex flex-col gap-2 p-2 text-sm">
 				{items?.map((text, i) => (
