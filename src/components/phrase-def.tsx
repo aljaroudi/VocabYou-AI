@@ -15,7 +15,7 @@ export function PhraseDef({
 	onMoveUp: VoidFunction
 }) {
 	const [isSpeaking, setIsSpeaking] = useState<number>()
-	const langName = def.originalText.lang ? languageLabels[def.originalText.lang].name : ''
+	const langName = def.originalText.lang ? languageLabels[def.originalText.lang].flag : ''
 	return (
 		<div>
 			<div className="flex justify-between" lang={def.originalText.lang ?? undefined}>
@@ -55,6 +55,7 @@ export function PhraseDef({
 										<span className="font-bold">{t.text}</span>
 									</div>
 									<span className="text-xs text-gray-500">{t.pronunciation}</span>
+									{t.func && <span className="text-xs text-gray-500">({t.func})</span>}
 								</div>
 							</div>
 							<p
@@ -92,21 +93,30 @@ function TitledList({
 	lang: Lang
 }) {
 	if (!items?.length) return null
+	const [isSpeaking, setIsSpeaking] = useState<number>()
 	return (
-		<div className="flex flex-col gap-1 rounded bg-white p-2">
-			<p className="text-sm font-bold">{title}</p>
-			<ol className="flex flex-col gap-2 p-2 text-sm">
-				{items?.map((text, i) => (
-					<li
+		<div className="flex flex-col rounded bg-white p-2 gap-1 text-sm">
+			<p className="font-bold">{title}</p>
+			<div className="contents">
+				{items.map((text, i) => (
+					<button
 						key={i}
-						className="rounded bg-stone-100 px-2 py-1 cursor-pointer"
-						onClick={() => speak({ text, lang })}
+						className="rounded bg-stone-100 px-2 py-1 cursor-pointer disabled:bg-emerald-200 disabled:animate-pulse"
+						disabled={isSpeaking === i}
+						onClick={() =>
+							speak({
+								text,
+								lang,
+								onStart: () => setIsSpeaking(i),
+								onEnd: () => setIsSpeaking(undefined),
+							})
+						}
 					>
 						<HeadphonesIcon className="size-3 inline" />
 						&nbsp;{text}
-					</li>
+					</button>
 				))}
-			</ol>
+			</div>
 		</div>
 	)
 }
