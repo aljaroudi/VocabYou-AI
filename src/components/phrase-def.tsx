@@ -71,7 +71,11 @@ export function PhraseDef({
                   {labels.flag} {t.text}
                 </span>
               </div>
-              <p className="text-sm data-[rtl=true]:text-right" data-rtl={isRtl}>
+              <p
+                className="cursor-copy text-sm data-[rtl=true]:text-right"
+                data-rtl={isRtl}
+                onClick={() => navigator.clipboard.writeText(t.definition)}
+              >
                 {t.definition}
               </p>
               <TitledList title={labels.exampleLabel} items={t.examples} rtl={isRtl} />
