@@ -40,6 +40,8 @@ export const aiRouter = createTRPCRouter({
 				],
 			})
 			if (!res.text) throw new Error('No response from AI')
-			return { phrase, def: JSON.parse(res.text) as GeminiRes, timestamp }
+			const def = JSON.parse(res.text) as GeminiRes
+			def.translations.sort((a, b) => a.target.localeCompare(b.target))
+			return { phrase, def, timestamp }
 		}),
 })
