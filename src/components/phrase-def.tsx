@@ -22,10 +22,10 @@ export function PhraseDef({
     <div>
       <div
         className="flex justify-between data-[rtl=true]:flex-row-reverse"
-        data-rtl={def.detectedLang === 'ar-001'}
+        data-rtl={def.originalText.lang === 'ar-001'}
       >
         <h2 className="text-lg font-bold">
-          {phrase} <i className="text-sm text-gray-500">({def.detectedLang})</i>
+          {phrase} <i className="text-sm text-gray-500">({def.originalText.lang})</i>
         </h2>
         <p className="text-sm text-gray-500">{getTimeAgo(timestamp)}</p>
       </div>
@@ -50,7 +50,7 @@ export function PhraseDef({
           }
           return (
             <div
-              key={t.target}
+              key={i}
               className="flex flex-col gap-2 rounded-md border p-2 shadow"
               data-lang={t.target}
             >
@@ -102,7 +102,7 @@ function TitledList({
   items?: string[] | null
   rtl: boolean
 }) {
-  if (!items) return null
+  if (!items?.length) return null
   return (
     <div
       className="flex flex-col gap-2 rounded bg-white p-2 data-[rtl=true]:text-right"
