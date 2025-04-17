@@ -8,16 +8,18 @@ export function MultiSelect({
   value,
   onChange,
   placeholder,
+  label,
 }: {
   options: string[]
   value: string[]
   onChange: (value: string) => void
   placeholder: string
+  label: (count: number) => string
 }) {
   return (
     <Select value={value.join(',')} onValueChange={onChange}>
       <SelectTrigger>
-        <SelectValue placeholder={placeholder}>{value.length} selected</SelectValue>
+        <SelectValue placeholder={placeholder}>{label(value.length)}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {options.map(option => (

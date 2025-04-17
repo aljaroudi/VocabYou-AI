@@ -32,11 +32,11 @@ export function Settings({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-[40ch]">
+        <div className="mx-auto w-full max-w-[40ch] pb-4">
           <DrawerHeader>
             <DrawerTitle>Settings</DrawerTitle>
           </DrawerHeader>
-          <div className="flex flex-col p-2">
+          <div className="flex flex-col gap-2 p-2">
             <div className="flex items-center justify-between">
               <Button variant="outline" onClick={handleApiKeyChange}>
                 <KeyRoundIcon />
@@ -48,6 +48,7 @@ export function Settings({
               value={languages}
               onChange={setLanguages}
               placeholder="Select languages"
+              label={count => `${count} languages`}
             />
           </div>
         </div>
