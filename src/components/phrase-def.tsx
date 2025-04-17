@@ -97,11 +97,11 @@ function TitledList({
 	return (
 		<div className="flex flex-col rounded bg-white p-2 gap-1 text-sm">
 			<p className="font-bold">{title}</p>
-			<div className="contents">
+			<div className="flex flex-col gap-1 w-full">
 				{items.map((text, i) => (
 					<button
 						key={i}
-						className="rounded bg-stone-100 px-2 py-1 cursor-pointer disabled:bg-emerald-200 disabled:animate-pulse"
+						className="rounded bg-stone-100 px-2 py-1 cursor-pointer disabled:bg-emerald-200 disabled:animate-pulse text-left"
 						disabled={isSpeaking === i}
 						onClick={() =>
 							speak({
