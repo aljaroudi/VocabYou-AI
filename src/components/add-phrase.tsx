@@ -30,7 +30,7 @@ export function AddPhrase({ onAdd }: { onAdd: (def: Phrase) => void }) {
 			className="sticky top-0 flex gap-2 backdrop-blur-md rounded-full p-2"
 			onSubmit={e => {
 				e.preventDefault()
-				add.mutate({ phrase, apiKey, languages, lang })
+				add.mutate({ phrase: phrase.trim(), apiKey, languages, lang })
 				e.currentTarget.blur()
 			}}
 		>
@@ -42,7 +42,7 @@ export function AddPhrase({ onAdd }: { onAdd: (def: Phrase) => void }) {
 			/>
 			<Input
 				value={phrase}
-				onChange={e => setPhrase(e.target.value)}
+				onChange={e => setPhrase(e.target.value.trimStart())}
 				placeholder="Enter a phrase..."
 				className="rounded-full bg-white disabled:animate-pulse"
 				minLength={1}
