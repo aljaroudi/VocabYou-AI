@@ -2,12 +2,11 @@ import type { Phrase } from '~/lib/types'
 import { Button } from './ui/button'
 import { ArrowUpIcon, HeadphonesIcon, TrashIcon } from 'lucide-react'
 import { languageLabels } from '~/lib/i18n-helpers'
-import { getTimeAgo } from '~/lib/dates'
 import { useVoices } from '~/hooks/use-voices'
 import { useState } from 'react'
 
 export function PhraseDef({
-  def: { def, phrase, timestamp },
+  def: { def, phrase },
   onDelete,
   onMoveUp,
 }: {
@@ -25,9 +24,8 @@ export function PhraseDef({
         data-rtl={def.originalText.lang === 'ar-001'}
       >
         <h2 className="text-lg font-bold">
-          {phrase} <i className="text-sm text-gray-500">{langName}</i>
+          {phrase} <i className="text-xs text-gray-500">{langName}</i>
         </h2>
-        <p className="text-sm text-gray-500">{getTimeAgo(timestamp)}</p>
       </div>
       <div className="flex flex-col gap-2">
         {def.translations.map((t, i) => {
