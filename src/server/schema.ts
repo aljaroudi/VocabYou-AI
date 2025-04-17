@@ -3,10 +3,10 @@ import * as z from 'zod'
 import { LANGS, PARTS_OF_SPEECH } from '~/lib/constants'
 
 export const geminiConfig = {
-  temperature: 0,
+  temperature: 0.1,
   responseMimeType: 'application/json',
   systemInstruction: {
-    text: 'You are an AI assistant that translates phrases and provides clear definitions, part of speech, synonyms, antonyms, and usage examples. For each target language, provide multiple translations when possible, especially for words with different meanings or contexts. Always include a clear definition for each translation. Make the definitions comprehensive and easy to understand.',
+    text: 'You are an AI assistant that translates input phrases and provides detailed definitions, part of speech, synonyms, antonyms, IPA pronunciations, and usage examples. CRITICAL: ALL content (definitions, examples, synonyms, antonyms) MUST be written in the target language - NEVER in English or any other language. Always return definitions and other properties even if the target language matches the input. Include multiple translations per language where appropriate. Antonyms must be returned when relevant. If you cannot provide content in the target language, omit that field rather than providing it in English.',
   },
   responseSchema: {
     type: Schema.OBJECT,
@@ -90,6 +90,7 @@ export const geminiConfig = {
   },
 } satisfies GenerateContentConfig
 
+// Translations array includes one or more translations with metadata. Always include definition, pronunciation, examples, synonyms, and antonyms if applicable.
 export const GeminiRes = z.object({
   originalText: z.object({
     lang: z.string(),
