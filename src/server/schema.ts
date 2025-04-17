@@ -11,10 +11,20 @@ export const geminiConfig = {
   responseSchema: {
     type: Schema.OBJECT,
     properties: {
-      detectedLang: {
-        type: Schema.STRING,
-        description: 'The most likely ISO language code of the phrase (e.g., "en-US", "fr-FR")',
-        nullable: false,
+      originalText: {
+        type: Schema.OBJECT,
+        properties: {
+          lang: {
+            type: Schema.STRING,
+            description: 'The most likely ISO language code of the phrase (e.g., "en-US", "fr-FR")',
+            nullable: false,
+          },
+          pronunciation: {
+            type: Schema.STRING,
+            description: 'IPA pronunciation of the original input phrase',
+            nullable: true,
+          },
+        },
       },
       translations: {
         type: Schema.ARRAY,
@@ -68,6 +78,11 @@ export const geminiConfig = {
                 type: Schema.STRING,
               },
             },
+            pronunciation: {
+              type: Schema.STRING,
+              description: 'IPA pronunciation of the translated word or phrase',
+              nullable: true,
+            },
           },
         },
       },
@@ -76,16 +91,20 @@ export const geminiConfig = {
 } satisfies GenerateContentConfig
 
 export const GeminiRes = z.object({
-  detectedLang: z.enum(LANGS),
+  originalText: z.object({
+    lang: z.string(),
+    pronunciation: z.optional(z.nullable(z.string())),
+  }),
   translations: z.array(
     z.object({
       target: z.enum(LANGS),
       text: z.string(),
       definition: z.string(),
       func: z.optional(z.enum(PARTS_OF_SPEECH)),
-      synonyms: z.union([z.array(z.string()), z.null()]).optional(),
-      antonyms: z.union([z.array(z.string()), z.null()]).optional(),
-      examples: z.union([z.array(z.string()), z.null()]).optional(),
+      synonyms: z.optional(z.nullable(z.array(z.string()))),
+      antonyms: z.optional(z.nullable(z.array(z.string()))),
+      examples: z.optional(z.nullable(z.array(z.string()))),
+      pronunciation: z.optional(z.nullable(z.string())),
     })
   ),
 })
