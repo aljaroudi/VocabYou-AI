@@ -8,7 +8,7 @@ type Label = {
   exampleLabel: string
 }
 
-export const languageLabels: Record<Phrase['def']['detectedLang'], Label> = {
+export const languageLabels: Record<Phrase['def']['translations'][number]['target'], Label> = {
   'en-US': {
     flag: '🇺🇸',
     name: 'English (US)',
