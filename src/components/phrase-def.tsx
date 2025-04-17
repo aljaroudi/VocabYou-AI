@@ -31,11 +31,7 @@ export function PhraseDef({
 					const labels = languageLabels[t.target]
 					const isRtl = t.target === 'ar-001'
 					return (
-						<div
-							key={i}
-							className="flex flex-col gap-2 rounded-md border p-2 shadow"
-							data-lang={t.target}
-						>
+						<div key={i} className="flex flex-col gap-2 rounded-md border p-2 shadow">
 							<div
 								className="flex items-center gap-2 data-[rtl=true]:flex-row-reverse"
 								data-rtl={isRtl}
@@ -56,9 +52,19 @@ export function PhraseDef({
 								>
 									<HeadphonesIcon />
 								</Button>
-								<span className="font-bold data-[rtl=true]:text-right" data-rtl={isRtl}>
-									{labels.flag} {t.text}
-								</span>
+								<div
+									className="flex flex-col items-start w-full data-[rtl=true]:items-end"
+									data-rtl={isRtl}
+								>
+									<div
+										className="flex data-[rtl=true]:flex-row-reverse items-center gap-1"
+										data-rtl={isRtl}
+									>
+										<span role="img">{labels.flag}</span>
+										<span className="font-bold data-[rtl=true]:text-right">{t.text}</span>
+									</div>
+									<span className="text-xs text-gray-500">{t.pronunciation}</span>
+								</div>
 							</div>
 							<p
 								className="cursor-copy text-sm data-[rtl=true]:text-right"
