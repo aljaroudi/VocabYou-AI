@@ -22,10 +22,10 @@ export function MultiSelect({
         <SelectValue placeholder={placeholder}>{label(value.length)}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {options.map(({ label, value }) => (
-          <SelectItem key={value} value={value}>
-            {value.includes(value) && <CheckIcon />}
-            {label}
+        {options.map(o => (
+          <SelectItem key={o.value} value={o.value}>
+            {value.includes(o.value) ? <CheckIcon /> : <div className="size-4" />}
+            {o.label}
           </SelectItem>
         ))}
       </SelectContent>
