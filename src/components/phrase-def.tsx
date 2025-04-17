@@ -92,8 +92,8 @@ function TitledList({
 	items?: string[] | null
 	lang: Lang
 }) {
-	if (!items?.length) return null
 	const [isSpeaking, setIsSpeaking] = useState<number>()
+	if (!items?.length) return null
 	return (
 		<div className="flex flex-col rounded bg-white p-2 gap-1 text-sm">
 			<p className="font-bold">{title}</p>
