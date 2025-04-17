@@ -124,3 +124,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+[lang="ar-001"],
+[lang="ar-001"] * {
+  direction: rtl;
+  text-align: right;
+  font-family: var(--font-rubik);
+}
