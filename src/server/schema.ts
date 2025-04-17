@@ -16,8 +16,9 @@ export const geminiConfig = {
         properties: {
           lang: {
             type: Schema.STRING,
-            description: 'The most likely ISO language code of the phrase (e.g., "en-US", "fr-FR")',
-            nullable: false,
+            description: 'The most likely ISO language code of the original phrase',
+            enum: LANGS,
+            nullable: true,
           },
           pronunciation: {
             type: Schema.STRING,
@@ -93,7 +94,7 @@ export const geminiConfig = {
 // Translations array includes one or more translations with metadata. Always include definition, pronunciation, examples, synonyms, and antonyms if applicable.
 export const GeminiRes = z.object({
   originalText: z.object({
-    lang: z.string(),
+    lang: z.optional(z.nullable(z.enum(LANGS))),
     pronunciation: z.optional(z.nullable(z.string())),
   }),
   translations: z.array(
