@@ -1,4 +1,4 @@
-import type { Phrase } from '~/lib/types'
+import type { Lang, Phrase } from '~/lib/types'
 import { Button } from './ui/button'
 import { ArrowUpIcon, HeadphonesIcon, TrashIcon } from 'lucide-react'
 import { languageLabels } from '~/lib/i18n-helpers'
@@ -73,9 +73,24 @@ export function PhraseDef({
 							>
 								{t.definition}
 							</p>
-							<TitledList title={labels.exampleLabel} items={t.examples} rtl={isRtl} />
-							<TitledList title={labels.synonymLabel} items={t.synonyms} rtl={isRtl} />
-							<TitledList title={labels.antonymLabel} items={t.antonyms} rtl={isRtl} />
+							<TitledList
+								title={labels.exampleLabel}
+								items={t.examples}
+								rtl={isRtl}
+								lang={t.target}
+							/>
+							<TitledList
+								title={labels.synonymLabel}
+								items={t.synonyms}
+								rtl={isRtl}
+								lang={t.target}
+							/>
+							<TitledList
+								title={labels.antonymLabel}
+								items={t.antonyms}
+								rtl={isRtl}
+								lang={t.target}
+							/>
 						</div>
 					)
 				})}
@@ -96,10 +111,12 @@ function TitledList({
 	title,
 	items,
 	rtl,
+	lang,
 }: {
 	title: string
 	items?: string[] | null
 	rtl: boolean
+	lang: Lang
 }) {
 	if (!items?.length) return null
 	return (
@@ -109,9 +126,10 @@ function TitledList({
 		>
 			<p className="text-sm font-bold">{title}</p>
 			<ol className="flex flex-col gap-2 p-2 text-sm">
-				{items?.map(i => (
+				{items?.map((text, i) => (
 					<li key={i} className="rounded bg-stone-100 px-2 py-1">
-						{i}
+						<HeadphonesIcon className="size-3" onClick={() => speak({ text, lang })} />
+						&nbsp;{text}
 					</li>
 				))}
 			</ol>
