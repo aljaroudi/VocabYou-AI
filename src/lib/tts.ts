@@ -1,4 +1,5 @@
 import { getVoices } from '~/hooks/use-voices'
+import type { Lang } from './types'
 
 export async function speak({
 	text,
@@ -7,9 +8,9 @@ export async function speak({
 	onEnd = null,
 }: {
 	text: string
-	lang: string
-	onStart: VoidFunction | null
-	onEnd: VoidFunction | null
+	lang: Lang
+	onStart?: VoidFunction | null
+	onEnd?: VoidFunction | null
 }) {
 	const voices = await getVoices()
 	const utterance = new SpeechSynthesisUtterance(text)
