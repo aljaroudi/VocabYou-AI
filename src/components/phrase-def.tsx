@@ -127,8 +127,12 @@ function TitledList({
 			<p className="text-sm font-bold">{title}</p>
 			<ol className="flex flex-col gap-2 p-2 text-sm">
 				{items?.map((text, i) => (
-					<li key={i} className="rounded bg-stone-100 px-2 py-1">
-						<HeadphonesIcon className="size-3" onClick={() => speak({ text, lang })} />
+					<li
+						key={i}
+						className="rounded bg-stone-100 px-2 py-1 cursor-pointer"
+						onClick={() => speak({ text, lang })}
+					>
+						<HeadphonesIcon className="size-3 inline" />
 						&nbsp;{text}
 					</li>
 				))}
