@@ -21,8 +21,8 @@ export function PhraseDef({
   return (
     <div>
       <div
-        className="flex justify-between data-[lang=ar-SA]:flex-row-reverse"
-        data-lang={def.detectedLang}
+        className="flex justify-between data-[rtl=true]:flex-row-reverse"
+        data-rtl={def.detectedLang === 'ar-001'}
       >
         <h2 className="text-lg font-bold">
           {phrase} <i className="text-sm text-gray-500">({def.detectedLang})</i>
@@ -32,14 +32,11 @@ export function PhraseDef({
       <div className="flex flex-col gap-2">
         {def.translations.map((t, i) => {
           const labels = languageLabels[t.target]
-          const isRtl = t.target === 'ar-SA'
+          const isRtl = t.target === 'ar-001'
 
           function speak() {
             const utterance = new SpeechSynthesisUtterance(t.text)
-
-            if (t.target === 'ar-SA') {
-              utterance.voice = voices.find(v => v.lang.startsWith('ar')) ?? null
-            } else if (t.target !== 'en-US') {
+            if (t.target !== 'en-US') {
               utterance.voice =
                 voices.find(v => v.lang === t.target && v.localService) ??
                 voices.find(v => v.lang === t.target) ??
