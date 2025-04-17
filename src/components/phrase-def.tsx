@@ -17,7 +17,7 @@ export function PhraseDef({
 }) {
   const voices = useVoices()
   const [isSpeaking, setIsSpeaking] = useState<number>()
-
+  const langName = def.originalText.lang ? languageLabels[def.originalText.lang].name : ''
   return (
     <div>
       <div
@@ -25,7 +25,7 @@ export function PhraseDef({
         data-rtl={def.originalText.lang === 'ar-001'}
       >
         <h2 className="text-lg font-bold">
-          {phrase} <i className="text-sm text-gray-500">({def.originalText.lang})</i>
+          {phrase} <i className="text-sm text-gray-500">{langName}</i>
         </h2>
         <p className="text-sm text-gray-500">{getTimeAgo(timestamp)}</p>
       </div>
