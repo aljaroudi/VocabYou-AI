@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckSquare2, Square } from 'lucide-react'
+import { CheckIcon } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 export function MultiSelect({
@@ -10,7 +10,7 @@ export function MultiSelect({
   placeholder,
   label,
 }: {
-  options: string[]
+  options: { label: string; value: string }[]
   value: string[]
   onChange: (value: string) => void
   placeholder: string
@@ -22,10 +22,10 @@ export function MultiSelect({
         <SelectValue placeholder={placeholder}>{label(value.length)}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {options.map(option => (
-          <SelectItem key={option} value={option}>
-            {value.includes(option) ? <CheckSquare2 /> : <Square />}
-            {option}
+        {options.map(({ label, value }) => (
+          <SelectItem key={value} value={value}>
+            {value.includes(value) && <CheckIcon />}
+            {label}
           </SelectItem>
         ))}
       </SelectContent>

@@ -3,6 +3,7 @@ import { Button } from './ui/button'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer'
 import { MultiSelect } from './multi-select'
 import { LANGS } from '~/lib/constants'
+import { languageLabels } from '~/lib/i18n-helpers'
 
 export function Settings({
   languages,
@@ -49,7 +50,10 @@ export function Settings({
               </Button>
             </div>
             <MultiSelect
-              options={LANGS}
+              options={LANGS.map(lang => ({
+                label: `${languageLabels[lang].flag} ${languageLabels[lang].name}`,
+                value: lang,
+              }))}
               value={languages}
               onChange={setLanguages}
               placeholder="Select languages"
