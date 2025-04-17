@@ -32,13 +32,18 @@ export function Settings({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-[40ch] pb-4">
+        <div className="mx-auto w-full max-w-[40ch] pb-8">
           <DrawerHeader>
             <DrawerTitle>Settings</DrawerTitle>
           </DrawerHeader>
-          <div className="flex flex-col gap-2 p-2">
+          <div className="flex flex-col gap-4 p-2">
             <div className="flex items-center justify-between">
-              <Button variant="outline" onClick={handleApiKeyChange}>
+              <Button
+                variant="outline"
+                onClick={handleApiKeyChange}
+                aria-busy={!apiKey}
+                className="aria-busy:text-rose-600"
+              >
                 <KeyRoundIcon />
                 {apiKey ? 'Update Gemini API key' : 'Gemini API key is required'}
               </Button>
