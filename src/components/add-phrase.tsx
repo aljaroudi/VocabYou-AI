@@ -2,10 +2,8 @@ import type { Phrase } from '~/lib/types'
 import { api } from '~/trpc/react'
 import { useState } from 'react'
 import { Input } from './ui/input'
-import { Button } from './ui/button'
 import { Settings } from './settings'
 import { useLocalState } from '~/hooks/useLocalState'
-import { PlusIcon } from 'lucide-react'
 
 export function AddPhrase({ onAdd }: { onAdd: (def: Phrase) => void }) {
   const [phrase, setPhrase] = useState('')
@@ -41,20 +39,11 @@ export function AddPhrase({ onAdd }: { onAdd: (def: Phrase) => void }) {
         value={phrase}
         onChange={e => setPhrase(e.target.value)}
         placeholder="Enter a phrase..."
-        className="rounded-full bg-white"
+        className="rounded-full bg-white disabled:animate-pulse"
         minLength={1}
         required
         disabled={add.isPending}
       />
-      <Button
-        disabled={!phrase || !apiKey || add.isPending}
-        size="icon"
-        type="submit"
-        aria-busy={add.isPending}
-        className="rounded-full aria-busy:animate-spin"
-      >
-        <PlusIcon />
-      </Button>
     </form>
   )
 }
